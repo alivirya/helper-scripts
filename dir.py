@@ -6,9 +6,9 @@ class DirectoryActivities:
     def __init__(self):
         self.chdir = os.getcwd() + "/"
 
-    def cleanSrtFiles(self):
+    def cleanNonVideoFiles(self):
         for file in os.listdir(self.chdir):
-            if file.endswith(".srt"):
+            if not file.endswith(".mkv"):
                 os.remove(file)
 
     def renameVideos(self):
@@ -28,7 +28,7 @@ class DirectoryActivities:
                 return match[0]
 
     def vidCleanUp(self):
-        self.cleanSrtFiles()
+        self.cleanNonVideoFiles()
         self.renameVideos()
 
 if __name__ == "__main__":
