@@ -28,7 +28,7 @@ class DirectoryActivities:
                 return match[0]
 
     def vidCleanUp(self):
-        self.cleanNonVideoFiles()
+        # self.cleanNonVideoFiles()
         self.renameVideos()
 
 if __name__ == "__main__":
