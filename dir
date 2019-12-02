@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+import argparse
 import os
 import re
 
@@ -6,21 +7,21 @@ class DirectoryActivities:
     def __init__(self):
         self.chdir = os.getcwd() + "/"
 
-    def cleanNonVideoFiles(self):
+    def _cleanNonVideoFiles(self):
         for file in os.listdir(self.chdir):
             if not file.endswith(".mkv"):
                 os.remove(file)
 
-    def renameVideos(self):
+    def _renameVideos(self):
         for file in os.listdir(self.chdir):
             if file.endswith(".mkv"):
-                dst = self.checkPatterns(file)
+                dst = self._checkPatterns(file)
                 src = self.chdir + file
                 dst = self.chdir + dst + ".mkv"
 
                 os.rename(src, dst)
 
-    def checkPatterns(self, check):
+    def _checkPatterns(self, check):
         patterns = ["S\d{1,2}E\d{1,2}", "\dx\d{1,2}"]
         for i in patterns:
             match = re.findall(i, check)
@@ -28,9 +29,18 @@ class DirectoryActivities:
                 return match[0]
 
     def vidCleanUp(self):
-        # self.cleanNonVideoFiles()
-        self.renameVideos()
+        # self._cleanNonVideoFiles()
+        self._renameVideos()
+
+
+def main():
+    dir = DirectoryActivities()
+    
+    parser = argparse.ArgumentParser(description="Helper script for directory based arguements")
+    parser.add_argument("--vid", action="store_true")
+    args = parser.parse_args()
+    if args.vid: 
+        dir.vidCleanUp
 
 if __name__ == "__main__":
-    dir = DirectoryActivities()
-    dir.vidCleanUp()
+    main()
