@@ -29,7 +29,7 @@ class DirectoryActivities:
                 return match[0]
 
     def vidCleanUp(self):
-        # self._cleanNonVideoFiles()
+        self._cleanNonVideoFiles()
         self._renameVideos()
 
 
@@ -40,7 +40,7 @@ def main():
     parser.add_argument("--vid", action="store_true")
     args = parser.parse_args()
     if args.vid: 
-        dir.vidCleanUp
+        dir.vidCleanUp()
 
 if __name__ == "__main__":
     main()
