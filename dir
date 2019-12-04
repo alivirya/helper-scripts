@@ -2,6 +2,7 @@
 import argparse
 import os
 import re
+import shutil
 
 class DirectoryActivities:
     def __init__(self):
@@ -9,20 +10,23 @@ class DirectoryActivities:
 
     def _cleanNonVideoFiles(self):
         for file in os.listdir(self.chdir):
-            if not file.endswith(".mkv"):
-                os.remove(file)
+            if not file.endswith(".mkv") and not file.endswith(".avi"):
+                try:
+                    os.remove(file)
+                except PermissionError as e:
+                    shutil.rmtree(file)
 
     def _renameVideos(self):
         for file in os.listdir(self.chdir):
-            if file.endswith(".mkv"):
+            if file.endswith(".mkv") or file.endswith(".avi"):
                 dst = self._checkPatterns(file)
                 src = self.chdir + file
-                dst = self.chdir + dst + ".mkv"
+                dst = self.chdir + dst + file[-4:]
 
                 os.rename(src, dst)
 
     def _checkPatterns(self, check):
-        patterns = ["S\d{1,2}E\d{1,2}", "\dx\d{1,2}"]
+        patterns = ["[sS]\d{1,2}[eE]\d{1,2}", "\dx\d{1,2}", "(Season \d{1} E\(\d{1,2}\))"]
         for i in patterns:
             match = re.findall(i, check)
             if len(match) != 0:
